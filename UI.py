@@ -87,8 +87,8 @@ def make_prediction(data, IMG_SIZE=IMG_SIZE):
 
 
 
-import My_Smiley_Helper
-import My_Smiley_Model
+# import My_Smiley_Helper
+# import My_Smiley_Model
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 
