@@ -4,3 +4,4 @@ opencv_python==4.5.4.58
 pandas==0.24.2
 streamlit==1.2.0
 streamlit_drawable_canvas==0.8.0
+opencv-python-headless
