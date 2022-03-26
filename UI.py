@@ -44,6 +44,7 @@ import pickle
 #   CNN_model = pickle.load(pickle_file)
 
 # Trying model trained in python 3.7 enviroment
+# CNN_model_p7.pkl
 with open("CNN_model_p7.pkl", "rb") as pickle_file:
     CNN_model_p7 = pickle.load(pickle_file)
 
