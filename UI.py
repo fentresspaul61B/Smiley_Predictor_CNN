@@ -4,91 +4,91 @@ import matplotlib.pyplot as plt
 import cv2
 import pandas as pd
 import numpy as np
+import pickle
 
 # Global Variable for Image Size
 IMG_SIZE = 28
 
+
+
 def image_reducer(data, size=IMG_SIZE):
     """
-    Function: image_reducer(path, size=IMG_SIZE)
-    Inputs:
-    - path
-      path is a file path from anywhere,
-
-    - size
-      dimension of square image to be reduced into
-
-
-    Outputs:
-    reduced image of data type np.array
+    Arguments:
+        path: (str)
+    Returns:
+        image that is reduced in size: (np.array)
+    Function purpose:
+        Reduce the input image arrays from size (300, 300) -> (28,28).
+    Algorithm:
+        1. Reshape input from 3D -> 2D.
+        2. Standardize the data by dividing by 255.
+        3. Use CV2 to resize the np.array.
+        4. Return the reduced image array.
     """
 
-    # Reducing from 3d to 2d shape
+    # 1. Reshape input from 3D -> 2D.
     data = data[:,:, 0]
 
-    # standardizing data
+    # 2. Standardize the data by dividing by 255.
     data = data / 255
 
-    # Resizeing Image
+    # 3. Use CV2 to resize the np.array.
     reduced_img = cv2.resize(data, (size, size))
 
+    # 4. Return the reduced image array.
     return reduced_img
 
 
 
-
-import pickle
-
-# Uploading the model from pickle
-# with open("CNN_Model.pkl", "rb") as pickle_file:
-#   CNN_model = pickle.load(pickle_file)
-
-# Trying model trained in python 3.7 enviroment
-# CNN_model_p7.pkl
+# Opening the model that was trained in jupyter.
 with open("CNN_model_p7.pkl", "rb") as pickle_file:
     CNN_model_p7 = pickle.load(pickle_file)
 
-# import joblib
-# loaded_model = joblib.load("CNN_model_joblib.sav")
+# The "loaded_model" is used in make prediction function.
+# Note: Allthough it does not seem like I am directly calling
+# Keras or Tensorflow, in order for this model to be deployed
+# on streamlit, I needed to add keras and Tensorflow into the
+# requirments.txt file.
 loaded_model = CNN_model_p7
-# opencv-python-headless
-# matplotlib==3.5.0
-# numpy==1.18.1
-# opencv_python==4.5.4.58
-# pandas==0.24.2
-# streamlit==1.2.0
-# streamlit_drawable_canvas==0.8.0
-# tensorflow==2.3.1
-# Keras==2.4.3
-# joblib==0.14.1
+
 
 
 def make_prediction(data, IMG_SIZE=IMG_SIZE):
     """
-    This Function takes in a path of an image, and resizes
-    it to the specified IMG size
-
-    Then reshapes the image into a convolutional input value of
-    (1,28,28,1)
-
-    Then calls the model.predict function on this input
-
-    The output is dictionary with two keys: Happy / Sad
-    and there respective probabilities (confidence) for
-    the prediction
-
+    Arguments:
+        data: (np.array)
+    Returns:
+        predictions: (dict)
+    Function purpose:
+        This function takes in the image data from the drawn image,
+        and makes a prediction whether or not the image is a happy
+        or sad face.
+    Algorithm:
+        1. Reshape input data to be fed into CNN.
+        2. Make prediction with loaded model.
+        3. Add probabilities from prediction into dictionary.
+        4. Return the dictionary.
     """
+
+    # 1. Reshaping the data, into size (1,28,28,1).
     data = data.reshape(1, IMG_SIZE, IMG_SIZE, 1)
+
+    # 2. Making prediction with loaded model.
     prediction = loaded_model.predict(data)[0]
+
+    # Add probabilities from prediction into dictionary.
     return_dict = {"Sad": prediction[0], "Happy": prediction[1] }
+
+    # 4. Return the dictionary.
     return return_dict
 
 
 
+"""
+THIS IS THE BEGGINING OF THE STREAMLIT UI.
+"""
 
 
-# import My_Smiley_Helper
-# import My_Smiley_Model
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 
@@ -98,12 +98,19 @@ from streamlit_drawable_canvas import st_canvas
 st.set_page_config(page_title="ML: Smiley App", page_icon = '🙂')
 
 
+
 st.write(
 """
-# Model
-Draw a happy or sad smiley face and click the button to see the model
-prediction.
+# Hand Drawn Smiley Face Prediction with Convolutional Neural Network (Keras Tensor Flow) 🙂
+Hello!
+
+In this computer vision project, I collected 1000 hand-drawn smiley faces and sad faces, and using data augmentation generated a dataset of 80,000 images. Then I used these images to train a convolutional neural network that can classify sad vs smiley faces with 99% accuracy.
+
 """
+
+st.write("[![Star](<https://github.com/fentresspaul61B/Smiley_Predictor_CNN><fentresspaul61B>/<Smiley_Predictor_CNN>.svg?logo=github&style=social)](<https://gitHub.com/><username>/<repo>)")
+
+
 )
 
 # Drawing Canvas
@@ -118,6 +125,9 @@ canvas_result = st_canvas(
 # Click Button --> Collect image data -->
 # Reduce Image --> Make Prediction -->
 # Print results on screen
+
+
+
 if st.button("Predict"):
     data = image_reducer(canvas_result.image_data.astype('float32'))
     # data = My_Smiley_Helper.image_reducer(canvas_result.image_data.astype('float32'))
