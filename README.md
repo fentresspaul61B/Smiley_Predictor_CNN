@@ -50,7 +50,7 @@ Below are the recources I used to help me through the project.
     [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/paul-fentress-985ab7112/)
 
 - Play with the App: 
-    [![](https://img.shields.io/badge/Streamlit-WebApp-important)](https://www.linkedin.com/in/paul-fentress-985ab7112/)
+    [![](https://img.shields.io/badge/Streamlit-WebApp-important)](https://share.streamlit.io/fentresspaul61b/smiley_predictor_cnn/UI.py)
 
 
 
