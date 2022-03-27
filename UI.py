@@ -5,6 +5,7 @@ import cv2
 import pandas as pd
 import numpy as np
 import pickle
+from PIL import Image
 
 # Global Variable for Image Size
 IMG_SIZE = 28
@@ -84,9 +85,9 @@ def make_prediction(data, IMG_SIZE=IMG_SIZE):
 
 
 
-"""
-THIS IS THE BEGGINING OF THE STREAMLIT UI.
-"""
+
+# THIS IS THE BEGGINING OF THE STREAMLIT UI.
+
 
 
 import streamlit as st
@@ -97,21 +98,33 @@ from streamlit_drawable_canvas import st_canvas
 
 st.set_page_config(page_title="ML: Smiley App", page_icon = '🙂')
 
+# Title Image
+title_image = Image.open('Smiley_Title.jpeg')
+st.image(title_image)
 
+# Project Intro
+intro_image = Image.open('Project_Intro.jpeg')
+st.image(intro_image)
 
-st.write(
-"""
-# Hand Drawn Smiley Face Prediction with Convolutional Neural Network (Keras Tensor Flow) 🙂
-Hello!
+# Directions
+directions_image = Image.open('Directions.jpeg')
+st.image(directions_image)
 
-In this computer vision project, I collected 1000 hand-drawn smiley faces and sad faces, and using data augmentation generated a dataset of 80,000 images. Then I used these images to train a convolutional neural network that can classify sad vs smiley faces with 99% accuracy.
+# Happy Label
+happy_label = Image.open('Happy_label.jpeg')
 
-"""
+# Sad Label
+sad_label = Image.open('Sad_label.jpeg')
 
-st.write("[![Star](<https://github.com/fentresspaul61B/Smiley_Predictor_CNN><fentresspaul61B>/<Smiley_Predictor_CNN>.svg?logo=github&style=social)](<https://gitHub.com/><username>/<repo>)")
+# Confidence Label
+confidence_label = Image.open('confidence.jpeg')
 
+# Code Label
+code_label = Image.open('code_label.png')
 
-)
+# Socials label
+socials_label = Image.open('connect.jpeg')
+
 
 # Drawing Canvas
 canvas_result = st_canvas(
@@ -136,8 +149,40 @@ if st.button("Predict"):
     sad = predictions["Sad"] # Numerical Confidence Value for Sad
     happy = predictions["Happy"] # Numerical Confidence Value for Happy
     if sad > happy:
-        st.write("Sad")
-        st.write(sad)
+        # st.write("# Sad")
+        st.image(sad_label, width=400)
+        st.image(confidence_label)
+        st.write("# " + str(sad))
     else:
-        st.write("Happy")
-        st.write(happy)
+        # st.write("# Happy")
+        st.image(happy_label, width=400)
+        st.image(confidence_label)
+        st.write( "# " + str(happy))
+
+
+# st.image(code_label, width=200)
+#
+#
+#
+# st.markdown("[![asdfasdf](code_label.png)](https://github.com/fentresspaul61B/Smiley_Predictor_CNN)")
+
+# Link to Github
+st.markdown('''
+    <a href="https://github.com/fentresspaul61B/Smiley_Predictor_CNN">
+        <img src="https://github.com/fentresspaul61B/Kaggle_Files/blob/main/code_label.jpeg?raw=true" width=300/>
+    </a>''',
+    unsafe_allow_html=True
+)
+
+# Link to linkedin
+st.markdown('''
+    <a href="https://www.linkedin.com/in/paul-fentress-985ab7112/">
+        <img src="https://github.com/fentresspaul61B/Kaggle_Files/blob/main/connect.jpeg?raw=true" width=500/>
+    </a>''',
+    unsafe_allow_html=True
+)
+
+# st.write("[![Link to Code](https://img.shields.io/github/stars/fentresspaul61B/Smiley_Predictor_CNN.svg?logo=github&style=social)](https://github.com/fentresspaul61B/Smiley_Predictor_CNN)")
+
+# st.image(socials_label, width=200)
+# st.write("[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/paul-fentress-985ab7112/)")
